@@ -10,10 +10,9 @@
     <h1>Login</h1>
     <form method="POST">
         {% csrf_token %}
-        {{ form }}
+        {{ form.as_p }}
         <input type="submit" />
         <input type="submit" value="Register" onclick="window.location='/accounts/register/?next=/';" />
     </form>
-    
 </body>
 </html>
