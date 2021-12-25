@@ -31,25 +31,31 @@ class UserLoginForm(forms.Form):
                 raise forms.ValidationError('This user is not avtice')
         return super(UserLoginForm, self).clean(*args, **kwargs)
 
-class UserRegisterForm(forms.ModelForm):
+class UserRegisterForm(forms.Form):
     email = forms.EmailField(label='Email Address')
     email2 = forms.EmailField(label='Confirm Email')
 
     password = forms.CharField(widget=forms.PasswordInput)
-        
+    password2 = forms.CharField(label='Confirm Password', widget=forms.PasswordInput)
+
     class Meta:
         model = User
         fields = [
             'username',
             'email',
             'email2',
-            'password'
+            'password',
+            'password2'
         ]
     
     def clean(self, *args, **kwargs):
         email = self.cleaned_data.get('email')
         email2 = self.cleaned_data.get('email2')
-
+        password = self.cleaned_data.get('email')
+        password2 = self.cleaned_data.get('email2')
+        print(password, password2)
+        if password != password2:
+            raise forms.ValidationError("passwords must match")
         if email != email2:
             raise forms.ValidationError("emails must match")
         email_qs = User.objects.filter(email=email)
